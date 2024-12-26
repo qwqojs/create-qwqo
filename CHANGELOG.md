@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/qwqojs/create-qwqo/compare/v1.0.1...v1.1.0) (2024-12-26)
+
+
+### Features
+
+* 添加项目初始化时包管理器安装功能，优化项目名称验证 ([b85a8a8](https://github.com/qwqojs/create-qwqo/commit/b85a8a81edc0c025183a3dcea640f45d05185f4d))
+
 ## [1.0.1](https://github.com/qwqojs/create-qwqo/compare/v1.0.0...v1.0.1) (2024-12-26)
 
 
