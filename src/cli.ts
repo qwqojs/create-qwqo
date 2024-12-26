@@ -155,8 +155,8 @@ const init = async () => {
       name: 'moduleType',
       message: '选择模块类型:',
       choices: [
-        { title: 'CommonJS', value: 'cjs' },
         { title: 'ES Modules', value: 'esm' },
+        { title: 'CommonJS', value: 'cjs' },
       ],
       initial: 0,
     },
