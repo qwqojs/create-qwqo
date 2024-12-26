@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/qwqojs/create-qwqo/compare/v1.1.0...v1.1.1) (2024-12-26)
+
+
+### Bug Fixes
+
+* 在模块类型调整默认选择 ([d45051f](https://github.com/qwqojs/create-qwqo/commit/d45051fa01e711645732510731c6f5f013c185af))
+
 ## [1.1.0](https://github.com/qwqojs/create-qwqo/compare/v1.0.1...v1.1.0) (2024-12-26)
 
 
