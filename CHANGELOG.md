@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/qwqojs/create-qwqo/compare/v1.0.0...v1.0.1) (2024-12-26)
+
+
+### Bug Fixes
+
+* ci ([e8b7a7b](https://github.com/qwqojs/create-qwqo/commit/e8b7a7bc86cf9ace16ff1cb702284edf9d29f6ef))
+
 ## 1.0.0 (2024-12-26)
 
 

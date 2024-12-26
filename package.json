@@ -1,6 +1,6 @@
 {
   "name": "create-qwqo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Lain",
   "type": "commonjs",
   "description": "Create TypeScript project template",
