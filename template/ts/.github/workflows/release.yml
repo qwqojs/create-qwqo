@@ -43,7 +43,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
       # 发布到 npm
       - name: 发布到 npm
-        run: npm run pub-beta
+        run: npm run pub
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         if: ${{ steps.release.outputs.release_created }}
