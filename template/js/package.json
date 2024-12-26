@@ -1,0 +1,10 @@
+{
+  "name": "{{projectName}}",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "description": "Create JavaScript project template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js"
+  }
+}
