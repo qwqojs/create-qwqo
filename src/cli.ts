@@ -288,8 +288,8 @@ const installDependencies = async (
 
     console.log(green('\n依赖安装完成! 🎉'))
     console.log('\n开始使用:\n')
-    console.log(blue(`  cd ${targetDir}`))
-    console.log(blue(`  ${packageManager} run dev`))
+    console.log(green(`  cd ${targetDir}`))
+    console.log(green(`  ${packageManager} run dev`))
   } catch (e) {
     console.log(red('\n依赖安装失败，请手动安装'))
     printManualCommands(targetDir, packageManager)
@@ -304,10 +304,10 @@ const installDependencies = async (
 const printManualCommands = (targetDir: string, packageManager: PackageManager) => {
   console.log('\n请手动执行以下命令:\n')
   if (isWin) {
-    console.log(blue(`  cd ${targetDir}`))
-    console.log(blue(`  ${packageManager} install && ${packageManager} run dev`))
+    console.log(green(`  cd ${targetDir}`))
+    console.log(green(`  ${packageManager} install && ${packageManager} run dev`))
   } else {
-    console.log(blue(`  cd ${targetDir} && ${packageManager} install && ${packageManager} run dev`))
+    console.log(green(`  cd ${targetDir} && ${packageManager} install && ${packageManager} run dev`))
   }
 }
 
