@@ -98,10 +98,39 @@ interface ProjectConfig {
 }
 
 /**
+ * 添加安装包管理器的函数
+ * @param pm 包管理器
+ * @returns 是否安装成功
+ */
+const installPackageManager = (pm: PackageManager): boolean => {
+  console.log(blue(`\n正在安装 ${pm}...`))
+  try {
+    if (isWin) {
+      execSync(`npm install -g ${pm}`, { stdio: 'inherit' })
+    } else {
+      execSync(`sudo npm install -g ${pm}`, { stdio: 'inherit' })
+    }
+    return true
+  } catch (e) {
+    console.log(red(`\n安装 ${pm} 失败，请手动安装`))
+    return false
+  }
+}
+
+/**
  * 初始化项目
  */
 const init = async () => {
   let targetDir = ''
+  let result: ProjectConfig | null = null
+
+  const validateProjectName = async (input: string) => {
+    const dir = input.replace(/\//g, '-').replace(/^@/, '')
+    if (fs.existsSync(dir)) {
+      return '目录已存在，请选择一个新的项目名称'
+    }
+    return true
+  }
 
   const questions = [
     {
@@ -109,6 +138,7 @@ const init = async () => {
       name: 'projectName',
       message: '项目名称:',
       initial: 'qwqo-project',
+      validate: validateProjectName,
     },
     {
       type: 'select',
@@ -162,25 +192,41 @@ const init = async () => {
     },
   ]
 
-  const answers = await prompts(questions) as ProjectConfig
-  const { projectName, language, moduleType, packageManager, registry, autoInstall } = answers
-
-  targetDir = projectName
-
-  if (fs.existsSync(targetDir)) {
-    console.log(red(`目录 ${targetDir} 已存在，请选择一个新的项目名称`))
-    return
+  while (!result) {
+    result = await prompts(questions, {
+      onCancel: () => {
+        console.log(red('\n操作已取消'))
+        process.exit(0)
+      },
+    }) as ProjectConfig
   }
 
+  const { projectName, language, moduleType, packageManager, registry, autoInstall } = result
+
+  targetDir = projectName.replace(/\//g, '-').replace(/^@/, '')
+
   if (autoInstall && packageManager !== PackageManager.NPM && !checkPMInstalled(packageManager)) {
-    console.log(yellow(`\n未检测到 ${packageManager}，请先安装 ${packageManager}`))
-    return
+    console.log(yellow(`\n未检测到 ${packageManager}`))
+    const shouldInstall = await prompts({
+      type: 'confirm',
+      name: 'value',
+      message: `是否安装 ${packageManager}?`,
+      initial: true,
+    })
+
+    if (shouldInstall.value) {
+      const installed = installPackageManager(packageManager)
+      if (!installed) return
+    } else {
+      console.log(yellow(`\n请先安装 ${packageManager} 后再试`))
+      return
+    }
   }
 
   console.log(blue(`\n正在创建项目 ${targetDir}...`))
 
   // 创建项目目录结构
-  await createProjectStructure(targetDir, language, moduleType)
+  await createProjectStructure(targetDir, language, moduleType, projectName)
 
   console.log(green('\n项目创建成功! 🎉'))
 
@@ -196,11 +242,13 @@ const init = async () => {
  * @param targetDir 项目目录
  * @param language 开发语言
  * @param moduleType 模块类型
+ * @param originalName 原始名称
  */
 const createProjectStructure = async (
   targetDir: string,
   language: string,
-  moduleType: string
+  moduleType: string,
+  originalName: string
 ) => {
   fs.mkdirSync(targetDir)
   const templatePath = resolve(templateDir, language)
@@ -209,7 +257,7 @@ const createProjectStructure = async (
   // 更新 package.json
   const pkgPath = resolve(targetDir, 'package.json')
   const pkg = require(pkgPath)
-  pkg.name = targetDir
+  pkg.name = originalName
   pkg.type = moduleType === 'esm' ? 'module' : 'commonjs'
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
 }
